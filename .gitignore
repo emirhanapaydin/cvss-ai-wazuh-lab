@@ -1,0 +1,23 @@
+# Python & Virtual Env
+venv/
+.venv/
+__pycache__/
+*.pyc
+*.swp
+
+# Hassas Bilgiler ve Ortam Değişkenleri
+.env
+*.key
+*.pem
+
+# Loglar ve Geçici Dosyalar
+*.log
+/var/log/cvss_ai.log
+
+# Local runtime data
+logs/
+
+# IDE & OS
+.vscode/
+.idea/
+.DS_Store
