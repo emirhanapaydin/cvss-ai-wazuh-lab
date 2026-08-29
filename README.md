@@ -2,11 +2,6 @@
 
 Gemini ile zafiyet raporlarını analiz eden, CVSS v3.1 temel skorunu hesaplayan ve JSONL formatında loglayan FastAPI servisi.
 
-## Gereksinimler
-
-- Python 3.10+
-- Google Gemini API anahtarı
-
 ## Kurulum
 
 ```bash
