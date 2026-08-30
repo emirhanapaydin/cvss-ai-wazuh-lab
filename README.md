@@ -138,15 +138,22 @@ sudo chmod 666 /var/log/cvss_ai.log
 ### 2. Configure Volume Bind Mount
 Ensure /var/log/cvss_ai.log is mounted into the wazuh.manager service in docker-compose.yml:
 
-```yaml
-services:
-  wazuh.manager:
-    image: wazuh/wazuh-manager:4.9.0
-    restart: always
-    volumes:
-      - /var/log/cvss_ai.log:/var/log/cvss_ai.log:ro
-      - wazuh_etc:/var/ossec/etc
-      - wazuh_logs:/var/ossec/logs
+```bash
+python3 -c '
+path = "docker-compose.yml"
+with open(path, "r") as f:
+    lines = f.readlines()
+
+mount_entry = "      - /var/log/cvss_ai.log:/var/log/cvss_ai.log:ro\n"
+
+if mount_entry not in lines:
+    for i, line in enumerate(lines):
+        if "wazuh_etc:/var/ossec/etc" in line:
+            lines.insert(i, mount_entry)
+            break
+    with open(path, "w") as f:
+        f.writelines(lines)
+'
 ```
 ### 3. Apply Wazuh Ingestion & Rule Configurations
 Inject the log collection block and custom security rules into the Wazuh Manager container:
