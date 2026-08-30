@@ -1,7 +1,7 @@
 
 # AI CVSS ENGINE
 
-Projenin ne yaptığını, hangi problemi çözdüğünü anlatan kısa ve net 1-2 cümlelik açıklama.
+AI CVSS Engine automates vulnerability triage by utilizing Google Gemini to extract CVSS v3.1 vectors and compute base severity scores from unstructured security reports. It eliminates manual assessment bottlenecks by streaming structured audit logs directly into Wazuh SIEM for real-time alerting and threat visibility.
 
 ## System Architecture
 
