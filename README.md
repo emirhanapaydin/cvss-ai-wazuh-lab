@@ -118,9 +118,11 @@ newgrp docker
 ```
 ### 3. Clone Wazuh Docker Repository & Generate Certificates
 ```bash
-git clone https://github.com/wazuh/wazuh-docker.git -b v4.9.0 --depth=1
-cd wazuh-docker/single-node
+if [ ! -d "wazuh-docker" ]; then
+  git clone https://github.com/wazuh/wazuh-docker.git -b v4.9.0 --depth=1
+fi
 
+cd wazuh-docker/single-node
 docker compose -f generate-indexer-certs.yml run --rm generator
 ```
 ### 4. Start the Wazuh Stack
