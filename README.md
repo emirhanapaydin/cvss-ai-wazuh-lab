@@ -70,6 +70,8 @@ cd cvss-ai-wazuh-lab
 #### 2. Create and activate a virtual environment:
 
 ```bash
+sudo apt update
+sudo apt install -y python3-venv python3-pip
 python3 -m venv venv
 source venv/bin/activate
 ```
