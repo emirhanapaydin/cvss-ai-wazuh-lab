@@ -158,7 +158,7 @@ if mount_entry not in lines:
 ### 3. Apply Wazuh Ingestion & Rule Configurations
 Inject the log collection block and custom security rules into the Wazuh Manager container:
 ```bash
-docker exec -i single-node-wazuh.manager-1 sed -i '/<\/ossec_config>/i \  <localfile>\n    <log_format>json<\/log_format>\n    <location>/var/log/cvss_ai.log</location>\n  <\/localfile>' /var/ossec/etc/ossec.conf
+docker exec -i single-node-wazuh.manager-1 sed -i '/<\/ossec_config>/i \  <localfile>\n    <log_format>json<\/log_format>\n    <location>/var/log/cvss_ai.log</location>\n  </localfile>' /var/ossec/etc/ossec.conf
 
 docker exec -i single-node-wazuh.manager-1 bash -c 'cat << "EOF" > /var/ossec/etc/rules/local_rules.xml
 <group name="cvss_ai,">
@@ -170,7 +170,7 @@ docker exec -i single-node-wazuh.manager-1 bash -c 'cat << "EOF" > /var/ossec/et
 
   <rule id="100101" level="10">
     <if_sid>100100</if_sid>
-    <field name="severity">^Critical$\vert{}^High$</field>
+    <field name="severity">^Critical$|^High$</field>
     <description>High/Critical CVSS Risk Detected by AI Lab</description>
   </rule>
 </group>
