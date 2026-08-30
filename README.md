@@ -131,13 +131,7 @@ docker compose up -d
 ```
 ## Wazuh SIEM & Docker Integration
 
-### 1. Initialize the Log File on Host
-
-```bash
-sudo touch /var/log/cvss_ai.log
-sudo chmod 666 /var/log/cvss_ai.log
-```
-### 2. Configure Volume Bind Mount
+### 1. Configure Volume Bind Mount
 Ensure /var/log/cvss_ai.log is mounted into the wazuh.manager service in docker-compose.yml:
 
 ```bash
@@ -157,7 +151,7 @@ if mount_entry not in lines:
         f.writelines(lines)
 '
 ```
-### 3. Apply Wazuh Ingestion & Rule Configurations
+### 2. Apply Wazuh Ingestion & Rule Configurations
 Inject the log collection block and custom security rules into the Wazuh Manager container:
 ```bash
 docker exec -i single-node-wazuh.manager-1 sed -i '/<\/ossec_config>/i \  <localfile>\n    <log_format>json<\/log_format>\n    <location>/var/log/cvss_ai.log</location>\n  </localfile>' /var/ossec/etc/ossec.conf
@@ -179,6 +173,17 @@ docker exec -i single-node-wazuh.manager-1 bash -c 'cat << "EOF" > /var/ossec/et
 EOF'
 
 docker exec -it single-node-wazuh.manager-1 /var/ossec/bin/wazuh-control restart
+```
+### 3. Restart Docker
+```bash
+cd ~/cvss-ai-wazuh-lab/wazuh-docker/single-node
+docker compose down
+docker compose up -d
+### 4. Initialize the Log File on Host
+```
+```bash
+sudo touch /var/log/cvss_ai.log
+sudo chmod 666 /var/log/cvss_ai.log
 ```
 ## Running the Application
 Start the FastAPI application with Uvicorn:
