@@ -64,7 +64,7 @@ Projeyi yerel ortamınızda çalıştırmak için aşağıdaki adımları izleyi
 #### 1. Clone the repository:
 
 ```bash
-git clone [https://github.com/your-username/cvss-ai-wazuh-lab.git](https://github.com/your-username/cvss-ai-wazuh-lab.git)
+git clone https://github.com/emirhanapaydin/cvss-ai-wazuh-lab.git
 cd cvss-ai-wazuh-lab
 ```
 #### 2. Create and activate a virtual environment:
