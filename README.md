@@ -100,6 +100,9 @@ APP_PORT=8000
 ```bash
 sudo sysctl -w vm.max_map_count=262144
 echo "vm.max_map_count=262144" | sudo tee -a /etc/sysctl.conf
+
+sudo touch /var/log/cvss_ai.log
+sudo chmod 666 /var/log/cvss_ai.log
 ```
 
 ### 2. Install Docker and Docker Compose
@@ -123,18 +126,11 @@ if [ ! -d "wazuh-docker" ]; then
 fi
 
 cd wazuh-docker/single-node
+
+# Generate TLS certificates
 docker compose -f generate-indexer-certs.yml run --rm generator
-```
-### 4. Start the Wazuh Stack
-```bash
-docker compose up -d
-```
-## Wazuh SIEM & Docker Integration
 
-### 1. Configure Volume Bind Mount
-Ensure /var/log/cvss_ai.log is mounted into the wazuh.manager service in docker-compose.yml:
-
-```bash
+# Inject volume bind mount into docker-compose.yml
 python3 -c '
 path = "docker-compose.yml"
 with open(path, "r") as f:
@@ -151,7 +147,11 @@ if mount_entry not in lines:
         f.writelines(lines)
 '
 ```
-### 2. Apply Wazuh Ingestion & Rule Configurations
+### 4. Start the Wazuh Stack
+```bash
+docker compose up -d
+```
+### 5. Apply Wazuh Ingestion & Rule Configurations
 Inject the log collection block and custom security rules into the Wazuh Manager container:
 ```bash
 docker exec -i single-node-wazuh.manager-1 sed -i '/<\/ossec_config>/i \  <localfile>\n    <log_format>json<\/log_format>\n    <location>/var/log/cvss_ai.log</location>\n  </localfile>' /var/ossec/etc/ossec.conf
@@ -174,20 +174,11 @@ EOF'
 
 docker exec -it single-node-wazuh.manager-1 /var/ossec/bin/wazuh-control restart
 ```
-### 3. Restart Docker
-```bash
-cd ~/cvss-ai-wazuh-lab/wazuh-docker/single-node
-docker compose down
-docker compose up -d
-### 4. Initialize the Log File on Host
-```
-```bash
-sudo touch /var/log/cvss_ai.log
-sudo chmod 666 /var/log/cvss_ai.log
-```
+
 ## Running the Application
 Start the FastAPI application with Uvicorn:
 ```bash
+cd ~/cvss-ai-wazuh-lab
 source venv/bin/activate
 uvicorn app:app --host 0.0.0.0 --port 8000 --reload
 ```
