@@ -47,8 +47,6 @@ AI CVSS Engine automates vulnerability triage by utilizing Google Gemini to extr
 
 # Getting Started
 
-Projeyi yerel ortamınızda çalıştırmak için aşağıdaki adımları izleyin.
-
 ### Prerequisites
 
 * Python 3.10+
